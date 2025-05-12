@@ -52,6 +52,7 @@
             opacity: 0;
             transform: rotateX(-90deg);
             transform-origin: 50% 100%;
+            white-space: pre; /* Preserve spaces */
         }
         
         .letter.visible {
@@ -89,7 +90,12 @@
                 [...line].forEach((char, index) => {
                     const letterSpan = document.createElement('span');
                     letterSpan.classList.add('letter');
-                    letterSpan.textContent = char;
+                    // Preserve spaces by using non-breaking space for empty spaces
+                    if (char === ' ') {
+                        letterSpan.innerHTML = '&nbsp;';
+                    } else {
+                        letterSpan.textContent = char;
+                    }
                     lineSpan.appendChild(letterSpan);
                 });
                 
