@@ -1,1 +1,117 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For those with conscience</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: white;
+            color: black;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+        }
+        
+        .container {
+            max-width: 800px;
+        }
+        
+        .quote {
+            font-weight: bold;
+            font-size: 2.5rem;
+            line-height: 1.4;
+            visibility: hidden;
+        }
+        
+        /* Responsive font size */
+        @media (max-width: 768px) {
+            .quote {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .quote {
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* Animation classes */
+        .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: rotateX(-90deg);
+            transform-origin: 50% 100%;
+        }
+        
+        .letter.visible {
+            opacity: 1;
+            transform: rotateX(0deg);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="quote">For Those With Conscience and the Capacity to Outrage—<br>Truth Depends on You.</h1>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quote = document.querySelector('.quote');
+            const text = quote.innerHTML;
+            
+            // Clear the existing text
+            quote.innerHTML = '';
+            
+            // Make the quote element visible
+            quote.style.visibility = 'visible';
+            
+            // Split text content by line breaks first
+            const lines = text.split('<br>');
+            
+            lines.forEach((line, lineIndex) => {
+                // Create a span for each line
+                const lineSpan = document.createElement('span');
+                lineSpan.classList.add('line');
+                
+                // For each character in the line
+                [...line].forEach((char, index) => {
+                    const letterSpan = document.createElement('span');
+                    letterSpan.classList.add('letter');
+                    letterSpan.textContent = char;
+                    lineSpan.appendChild(letterSpan);
+                });
+                
+                // Add the line to the quote
+                quote.appendChild(lineSpan);
+                
+                // Add line break if it's not the last line
+                if (lineIndex < lines.length - 1) {
+                    quote.appendChild(document.createElement('br'));
+                }
+            });
+            
+            // Get all letter spans
+            const letters = document.querySelectorAll('.letter');
+            
+            // Animate each letter with a delay
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    letter.classList.add('visible');
+                }, 100 * index);
+            });
+        });
+    </script>
+</body>
+</html>
