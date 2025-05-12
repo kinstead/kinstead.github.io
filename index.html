@@ -31,6 +31,9 @@
             font-size: 2.5rem;
             line-height: 1.4;
             visibility: hidden;
+            white-space: normal;
+            word-break: keep-all;
+            word-wrap: normal;
         }
         
         /* Responsive font size */
@@ -47,12 +50,15 @@
         }
         
         /* Animation classes */
+        .word {
+            margin-right: 0.1em;
+        }
+        
         .letter {
             display: inline-block;
             opacity: 0;
             transform: rotateX(-90deg);
             transform-origin: 50% 100%;
-            white-space: pre; /* Preserve spaces */
         }
         
         .letter.visible {
@@ -70,7 +76,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const quote = document.querySelector('.quote');
-            const text = quote.innerHTML;
+            const text = quote.textContent;
             
             // Clear the existing text
             quote.innerHTML = '';
@@ -78,33 +84,33 @@
             // Make the quote element visible
             quote.style.visibility = 'visible';
             
-            // Split text content by line breaks first
-            const lines = text.split('<br>');
+            // Split text into words
+            const words = text.split(' ');
             
-            lines.forEach((line, lineIndex) => {
-                // Create a span for each line
-                const lineSpan = document.createElement('span');
-                lineSpan.classList.add('line');
+            // For each word
+            words.forEach((word, wordIndex) => {
+                // Create a span for each word
+                const wordSpan = document.createElement('span');
+                wordSpan.classList.add('word');
+                wordSpan.style.display = 'inline-block';
                 
-                // For each character in the line
-                [...line].forEach((char, index) => {
+                // For each character in the word
+                [...word].forEach((char, index) => {
                     const letterSpan = document.createElement('span');
                     letterSpan.classList.add('letter');
-                    // Preserve spaces by using non-breaking space for empty spaces
-                    if (char === ' ') {
-                        letterSpan.innerHTML = '&nbsp;';
-                    } else {
-                        letterSpan.textContent = char;
-                    }
-                    lineSpan.appendChild(letterSpan);
+                    letterSpan.textContent = char;
+                    wordSpan.appendChild(letterSpan);
                 });
                 
-                // Add the line to the quote
-                quote.appendChild(lineSpan);
+                // Add the word to the quote
+                quote.appendChild(wordSpan);
                 
-                // Add line break if it's not the last line
-                if (lineIndex < lines.length - 1) {
-                    quote.appendChild(document.createElement('br'));
+                // Add space after each word (except the last one)
+                if (wordIndex < words.length - 1) {
+                    const spaceSpan = document.createElement('span');
+                    spaceSpan.classList.add('letter', 'space');
+                    spaceSpan.innerHTML = '&nbsp;';
+                    quote.appendChild(spaceSpan);
                 }
             });
             
